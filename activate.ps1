@@ -56,9 +56,11 @@ $env:PATH="$env:ANACONDA_ENVS\$env:CONDA_DEFAULT_ENV\;$env:ANACONDA_ENVS\$env:CO
 Write-Host
 Write-Host
 
+
 # Capture existing user prompt
 function global:condaUserPrompt {''}
 $function:condaUserPrompt = $function:prompt
+
 
 function global:prompt
 {
@@ -66,3 +68,6 @@ function global:prompt
     Write-Host "[$condaEnvName] " -nonewline -ForegroundColor Red
     & $function:condaUserPrompt
 }
+
+# Find and run any activation scripts
+Get-Childitem -Path $env:ANACONDA_ENVS\$env:CONDA_DEFAULT_ENV\etc\conda\activate.d\ -Filter *.ps1 | % {.$_.FullName}

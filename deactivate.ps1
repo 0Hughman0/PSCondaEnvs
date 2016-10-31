@@ -7,9 +7,13 @@ Activate.ps1 and deactivate.ps1 recreates the existing virtualenv BAT files in P
 This isn't idiomatic Powershell, just a translation.
 #>
 
+
 Param(
     [string]$condaEnvName
 )
+
+# Find and run any deactivation scripts
+Get-Childitem -Path $env:ANACONDA_ENVS\$env:CONDA_DEFAULT_ENV\etc\conda\deactivate.d\ -Filter *.ps1 | % {.$_.FullName}
 
 # fix for pre-PS3 - creates $PSScriptRoot
 if (-not $PSScriptRoot) { 
